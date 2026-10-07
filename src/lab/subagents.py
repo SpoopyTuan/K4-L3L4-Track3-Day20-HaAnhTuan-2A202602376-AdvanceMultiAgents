@@ -6,12 +6,15 @@ Kiểm tra:    pytest tests/test_02_agent.py
 
 
 def get_subagents() -> list[dict]:
-    """Trả về danh sách subagent (ít nhất 2, tên khác nhau).
-
-    Mỗi phần tử là một dict có các khóa bắt buộc:
-      "name":          tên duy nhất (chữ thường, có thể có dấu gạch ngang)
-      "description":   khi nào tác tử chính nên giao việc cho subagent này (viết như một hướng dẫn hành động)
-      "system_prompt": chỉ dẫn cho subagent
-    Gợi ý vai trò: explorer (đọc và báo cáo), implementer (thực hiện), reviewer (kiểm tra độc lập).
-    """
-    raise NotImplementedError("TODO: cài đặt get_subagents (xem guides/pseudocode/02_subagents.md)")
+    return [
+        {
+            "name": "explorer",
+            "description": "Delegate when requirements, files, or data need investigation before implementation.",
+            "system_prompt": "Read the supplied requirements and relevant files. Do not modify files. Report findings, paths, constraints, and recommended next steps concisely.",
+        },
+        {
+            "name": "reviewer",
+            "description": "Delegate when completed changes need independent checks against requirements and edge cases.",
+            "system_prompt": "Check the supplied requirements against the resulting files. Run relevant tests when needed. Do not modify files. Report concrete failures and supporting evidence, or confirm the checks passed.",
+        },
+    ]
