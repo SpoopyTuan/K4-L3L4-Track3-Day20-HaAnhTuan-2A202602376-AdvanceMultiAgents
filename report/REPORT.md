@@ -1,17 +1,16 @@
 # Báo cáo Lab: Self evolving Agentic
 
-> Sao chép tệp này thành `report/REPORT.md` (đã làm ở Phần 0) và điền dần qua các Phần của lab. Xóa các dòng hướng dẫn dạng trích dẫn (bắt đầu bằng `>`). Văn phong kỹ thuật, ngắn gọn, mọi nhận định đi kèm số liệu hoặc bằng chứng. Trong buổi học: điền mục 1 đến 7 (bản nháp). Sau buổi học: hoàn thiện mục 8 đến 10.
 
 ## 1. Thông tin nhóm và cấu hình
 
 | Họ tên | Mã sinh viên | Phần đóng góp |
 |---|---|---|
-| | | |
+| Hà Anh Tuấn | 2A202602376 | Làm cá nhân |
 
-- Mô hình (tên deployment hoặc `LAB_MODEL`), nhiệt độ (`LAB_TEMPERATURE`), `recursion_limit`:
-- Phiên bản Deep Agents (`pip show deepagents`), hệ điều hành, chạy trực tiếp hay trong Docker:
-- Số lần chạy tác vụ đã dùng / ngân sách:
-- Commit của tag `freeze`:
+- Mô hình theo .env hiện tại: `openai:gpt-4o-mini`; nhiệt độ `0`; recursion_limit `60`. Cấu hình hiện tại không thay thế nhật ký cấu hình lịch sử.
+- Deep Agents `0.7.21`; trace ghi Linux/WSL, Python `3.14.4`; chạy trực tiếp trong WSL.
+- Kết quả lưu: 21 lượt tác vụ (18 chính thức, 3 thử skill) và 1 lượt curator được xác nhận; tổng ngân sách chưa được cung cấp.
+- Commit của tag `freeze`: `3a09129858303e477b3fcec3b0519df8f54b0561`.
 
 ## 2. Giả thuyết (commit TRƯỚC tag `freeze`, Phần 4.0)
 
@@ -111,7 +110,7 @@ Không thấy tên tác vụ đánh giá hoặc đáp án cụ thể trong hai s
 
 ### Kiểm tra sử dụng skill trên tác vụ học (Phần 3.4)
 
-Đã chạy xong `python -m lab.runner --condition skills-auto --tasks learn` và có đủ run.json/trace.md của ba tác vụ học. Một lần chạy bị recursion limit; kết quả được giữ nguyên để phân tích, chưa chạy lại.
+Kết quả thử tại results/skills-auto-dev: đã chạy xong `python -m lab.runner --condition skills-auto --tasks learn` và có đủ run.json/trace.md của ba tác vụ học. Một lần chạy bị recursion limit; kết quả được giữ nguyên để phân tích, chưa chạy lại.
 
 | Tác vụ | Điểm baseline → skills-auto | Token skills-auto | Thời gian | skills_read | error | skills_modified |
 |---|---|---:|---:|---:|---|---|
@@ -127,7 +126,7 @@ Trace cho thấy tác tử đọc docstring và test hiện có, sửa pricing/r
 
 So với baseline code-learn, số token giảm từ 196.394 xuống 59.898 (-69,5%) và thời gian từ 575,2 xuống 80,8 giây (-86,0%), điểm giữ nguyên 4/10. So với subagents code-learn, điểm giảm từ 5/10 xuống 4/10. Baseline bị recursion limit, còn lần skills-auto kết thúc với error=null; cùng với skills_read=0 và chỉ một lần chạy, chưa thể quy thay đổi chi phí cho skill. Các thống kê đủ ba tác vụ được trình bày dưới đây.
 
-Bộ skill không bị thay đổi trong lần chạy (skills_modified=false); run ghi skills_sha256=`34fb336a49b92f9b7e418841e09c0476030922bfe2b4234c70e3250ae4a4b5c8`. Chưa có dữ liệu so sánh sau đóng băng. Đã đủ dữ liệu thử nghiệm Phần 3.4; riêng data-learn là kết quả khi bị dừng, không phải một lần hoàn thành bình thường. Trước lần chạy chính thức Phần 4, sao lưu kết quả thử nghiệm Phần 3.4 theo GUIDE để tránh mất dữ liệu so sánh do ghi đè.
+Bộ skill không bị thay đổi trong lần chạy (skills_modified=false); run ghi skills_sha256=`34fb336a49b92f9b7e418841e09c0476030922bfe2b4234c70e3250ae4a4b5c8`. So sánh với lần sau đóng băng được trình bày ở mục 8.6. Đã đủ dữ liệu thử nghiệm Phần 3.4; riêng data-learn là kết quả khi bị dừng, không phải một lần hoàn thành bình thường. Kết quả thử đã được sao lưu tại results/skills-auto-dev trước lần chạy chính thức.
 
 #### Kết quả data-learn và logs-learn
 
@@ -151,43 +150,94 @@ So với baseline, skills-auto có điểm trung bình giảm khoảng 4,2 đi�
 
 ## 7. Kết quả so sánh (Phần 4.3, 4.4)
 
-> Dán nội dung `report/table.md` và kết quả `python scripts/check_breakdown.py`. Nêu các lần chạy có `error` hoặc `skills_modified = true` (nếu có) và cách xử lý.
+Bảng chính dùng 18 kết quả trong results/baseline, results/subagents và results/skills-auto. Ba kết quả thử Phần 3.4 được giữ riêng tại results/skills-auto-dev.
+
+| Task | baseline | subagents | skills-auto |
+|---|---|---|---|
+| code-learn | 4/10 | 5/10 | 3/10 |
+| data-learn | 1/8 | 0/8 | 1/8 |
+| logs-learn | 0/9 | 0/9 | 0/9 |
+| code-eval | 0/11 | 1/11 | 1/11 |
+| data-eval | 0/9 | 0/9 | 3/9 |
+| logs-eval | 1/10 | 1/10 | 1/10 |
+| **Mean score - learning tasks** | 0.18 | 0.17 | 0.14 |
+| **Mean score - evaluation tasks** | 0.03 | 0.06 | 0.17 |
+| **Mean tokens per run** | 88,635 | 139,757 | 71,285 |
+| **Runs that read a skill** | 0/6 | 0/6 | 0/6 |
+
+Thống kê từ scripts/check_breakdown.py:
 
 ```text
-(dán bảng ở đây)
+condition     role    technical  house rules  mean tokens  read a skill
+baseline      eval      1/18         0/12          93,374      0/3
+baseline      learn     5/18         0/9           83,896      0/3
+subagents     eval      2/18         0/12         212,552      0/3
+subagents     learn     5/18         0/9           66,962      0/3
+skills-auto   eval      5/18         0/12         105,855      0/3
+skills-auto   learn     4/18         0/9           36,716      0/3
 ```
+
+Có 5/18 lần chính thức bị GraphRecursionError ở giới hạn 60:
+
+| Điều kiện / tác vụ | Điểm | Token | Giây |
+|---|---:|---:|---:|
+| baseline / code-learn | 4/10 | 196.394 | 575,2 |
+| baseline / code-eval | 0/11 | 218.352 | 707,1 |
+| subagents / code-eval | 1/11 | 210.070 | 641,0 |
+| subagents / data-eval | 0/9 | 409.413 | 111,2 |
+| skills-auto / code-eval | 1/11 | 149.242 | 119,8 |
+
+Giữ nguyên kết quả khi bị dừng, chưa chạy lại và không đổi giới hạn giữa điều kiện. Trace các lượt lỗi rỗng nên không xác định được thao tác lặp. Lượt thử skills-auto-dev/data-learn cũng bị lỗi, nhưng không tính vào bảng chính. Tất cả 18 bản ghi có skills_modified=false; không tác vụ nào đạt toàn bộ check.
+
+Lệnh `python scripts/verify_freeze.py` trả về `checked 6 runs of skill conditions: OK`, xác nhận cả sáu lượt chạy `skills-auto` tuân thủ quy trình đóng băng: giả thuyết được commit trước tag `freeze`, bộ skill không thay đổi từ mốc đóng băng, các lượt chạy dùng đúng bộ skill đã chốt và có `skills_modified=false`.
 
 ## 8. Phân tích
 
-> Trả lời từng câu bằng số liệu từ mục 7 và bằng chứng từ vết. Kết quả âm hoặc không có khác biệt vẫn hợp lệ nếu được phân tích tốt.
+1. **Điểm và giả thuyết.** Điểm trung bình baseline/subagents/skills-auto trên học là 17,50% / 16,67% / 14,17%; trên eval là 3,33% / 6,36% / 17,47%. Hai điều kiện thử nghiệm đều không cải thiện điểm học so với baseline; subagents cải thiện eval 3,03 điểm phần trăm, skills-auto cải thiện 14,14 điểm phần trăm. Không có trường hợp cải thiện học nhưng không cải thiện eval trong bảng chính. H1 bị bác bỏ theo điểm quan sát; phần dự đoán điểm của H2 bị bác bỏ nhưng dự đoán không cải thiện quy ước được ủng hộ. Dự đoán Δeval ≤ 0 của H3 bị bác bỏ, còn Δlearn ≤ 0 phù hợp dữ liệu (khoảng -3,33 điểm phần trăm). Giữ nguyên giả thuyết ban đầu; khác biệt quan sát chưa chứng minh quan hệ nhân quả hoặc ý nghĩa thống kê.
 
-1. So với `baseline`, điều kiện nào cải thiện điểm tác vụ **học**? Điều kiện nào cải thiện điểm tác vụ **đánh giá**? Có điều kiện nào cải thiện tác vụ học nhưng không cải thiện tác vụ đánh giá? Nếu có, đó là dấu hiệu gì?
-2. Tách điểm thành check kỹ thuật và check quy ước (`rule_`). Skill do curator sinh giúp nhóm check nào? Check quy ước **mới** của tác vụ đánh giá có được skill giúp không, và vì sao?
-3. Dựa vào vết và `skills_read`, giải thích một check mà skill giúp đạt và một check mà skill không giúp (skill chưa được đọc, đọc nhưng không làm theo, skill thiếu hoặc sai).
-4. Chi phí: so sánh số token trung bình giữa các điều kiện. Điều kiện nào có hiệu quả tốt nhất theo điểm trên mỗi token? Đa tác tử có đáng chi phí trong thí nghiệm này không?
-5. Có dấu hiệu rò rỉ dữ liệu hoặc quá khớp nào trong skill sinh ra không? Nhóm đã phòng tránh như thế nào?
-6. Nhiễu: so sánh điểm tác vụ học của cùng bộ skill ở Phần 3.4 (đã sao lưu) và sau đóng băng. Chênh lệch bao nhiêu? Nó cho biết điều gì về độ tin cậy của các chênh lệch trong bảng ở mục 7?
+2. **Kỹ thuật và quy ước.** Eval kỹ thuật đạt 1/18, 2/18 và 5/18; học kỹ thuật đạt 5/18, 5/18 và 4/18. Quy ước đều 0/12 trên eval và 0/9 trên học. skills-auto/data-eval đạt top_category, missing_total_orders và duplicate_events_removed; code-eval đạt add_slot_no_shared_state; logs-eval chỉ đạt valid_structure. Cải thiện nằm ở check kỹ thuật, nhưng chưa có bằng chứng skill giúp trực tiếp. Các quy ước mới rule_version_bump, rule_sorted_keys_format và rule_source_line đều không đạt. Bộ skill không cung cấp rõ các quy tắc này và chưa ghi nhận đọc; vượt qua validator định dạng không bảo đảm chuyển giao quy ước.
+
+3. **Trace và sử dụng skill.** Không thể nêu một check được chứng minh là do skill giúp đạt: cả 6 bản ghi skills-auto có skills_read=0; các trace không rỗng không ghi đọc SKILL.md. Ví dụ top_category đạt ở data-eval: trace cho thấy đọc README, dùng thư viện chuẩn, chuẩn hóa category bằng strip().lower(), xử lý chuỗi tiền và khử trùng theo id. Đây là hành vi đúng một phần, không chứng minh áp dụng skill. Hai check tháng UTC vẫn thất bại: mã hiển thị dùng datetime.fromisoformat rồi kiểm tra year/month mà chưa chuyển UTC. Lệnh trong trace bị cắt nên không tái dựng toàn bộ chương trình. logs-eval đổi một số timestamp bằng date và ghi errors.json nên valid_structure đạt; các check còn lại thất bại. Skill log chỉ nêu lọc ERROR/CRITICAL trong khi đề eval có mức khác: có nguy cơ bỏ sót nếu áp dụng máy móc, nhưng không có bằng chứng agent đã đọc skill gây lỗi. skills-auto/data-learn gặp ModuleNotFoundError: pandas rồi ghi placeholder; top_region đạt chưa chứng minh tính toán đúng. Trace rỗng ở lượt recursion limit làm giới hạn suy luận từ skills_read=0.
+
+4. **Chi phí.** Token trung bình trên cả 6 tác vụ: baseline 88.635,5; subagents 139.757,3; skills-auto 71.285,8. Tổng token tương ứng 531.813 / 838.544 / 427.715. Dùng tổng check đạt trên mỗi 100.000 token, baseline đạt 6 check → 1,13; subagents 7 → 0,83; skills-auto 9 → 2,10. Trên eval riêng, chỉ số lần lượt khoảng 0,36 / 0,31 / 1,57. Chỉ số coi mọi check trọng số bằng nhau; không phản ánh hoàn thành đầy đủ và không thay thế chi phí tiền. skills-auto tốt nhất theo chỉ số này trong lượt chính thức, nhưng chưa quy lợi ích cho nội dung skill. Subagents tăng tổng token khoảng 57,7% so với baseline để tăng 1 check; chưa chứng minh đáng chi phí. Các lượt bị cắt tác động mạnh tới kết quả.
+
+5. **Rò rỉ và quá khớp.** Curator chỉ nhận role=learn; hai skill hợp lệ theo validator, không chứa định danh eval hay đáp án cụ thể quan sát được. Giả thuyết đã commit trước freeze; skill giữ nguyên; kết quả thử tách riêng. Không dùng điểm eval để sửa skill hoặc giả thuyết. Skill log bám schema học nên có nguy cơ phạm vi quá hẹp, nhưng chưa chứng minh quá khớp do dùng skill vì chưa ghi nhận đọc skill và eval còn cao hơn học. Validator định danh không phát hiện mọi dạng rò rỉ ngữ nghĩa.
+
+6. **Nhiễu.** Cùng hash skill, điểm Phần 3.4 → chính thức là code-learn 4/10 → 3/10 (-10 điểm phần trăm), data-learn 0/8 → 1/8 (+12,5), logs-learn 0/9 → 0/9. Trung bình học tăng 13,33% → 14,17% (+0,83 điểm phần trăm), nhưng biến động theo tác vụ triệt tiêu nhau. Token học giảm 604.490 → 110.150, chủ yếu vì data-learn thử bị recursion limit còn chính thức không bị. Skill không đổi nên không coi chênh lệch là học thêm hoặc skill tốt hơn. Chênh lệch nhỏ 1 check cần diễn giải thận trọng; chưa có đủ lần lặp để đo độ biến thiên.
 
 ## 9. Hạn chế và tính hợp lệ
 
-> Nêu ít nhất 3 hạn chế và ảnh hưởng của từng hạn chế đến kết luận (ví dụ: chỉ 3 tác vụ mỗi vai trò, mỗi cấu hình chạy một lần, nhiễu của mô hình, tác vụ do giảng viên thiết kế sẵn quy ước, chỉ một mô hình).
-
-1.
-2.
-3.
+1. Chỉ 3 tác vụ mỗi vai trò, mỗi cấu hình chạy chính thức một lần; không có khoảng tin cậy, khó khái quát chênh lệch nhỏ.
+2. Có 5/18 lượt chính thức bị recursion limit, trace rỗng; điểm là trạng thái khi bị dừng, làm nhiễu so sánh chất lượng và chi phí.
+3. Không lượt skills-auto nào ghi nhận đọc skill. Thí nghiệm đo điều kiện có cung cấp skill, chưa kiểm chứng hiệu quả khi skill được đọc/làm theo; lượt thiếu trace còn hạn chế đo lường.
+4. Shell agent thiếu pandas, có đầu ra thiếu hoặc placeholder; điểm thấp phản ánh cả môi trường và quy trình thực thi, không chỉ năng lực giải bài.
+5. Quy ước do lab thiết kế và chỉ một mô hình/cấu hình; kết quả không đại diện mọi mô hình hay dự án.
 
 ## 10. Kết luận
 
-> Tối đa 5 câu. Chỉ khẳng định điều số liệu hỗ trợ. Nêu một đề xuất cải tiến tiếp theo.
+skills-auto có điểm eval trung bình cao nhất (17,47%) và hiệu quả check/token tốt nhất trong lượt chính thức, nhưng điểm học thấp hơn baseline. Không điều kiện nào đạt check quy ước hoặc hoàn thành trọn vẹn một tác vụ. Chưa có bằng chứng cải thiện do đọc skill, và recursion limit làm hạn chế kết luận. Subagents tốn nhiều token hơn baseline mà chỉ tăng một check tổng thể, nên chưa chứng minh lợi ích chi phí. Thí nghiệm tiếp theo nên kiểm tra kích hoạt/đọc skill, môi trường shell và lưu trace khi lỗi, rồi chạy lặp một thiết kế mới; không chỉnh bộ skill đã freeze hiện tại.
 
 ## Phụ lục
 
-- Lệnh đã chạy (theo thứ tự):
-- Thử thách mở rộng (nếu có): hướng chọn, kết quả, nhận xét.
-- Ghi chú khác:
+Lệnh đã chạy theo thông tin người dùng và kết quả lưu:
 
-### Nhật ký Phần 1–2
+```bash
+python -m pytest tests/test_02_agent.py tests/test_03_runner.py
+python -m lab.runner --condition baseline --tasks data-learn
+python -m lab.runner --condition baseline --tasks code-learn logs-learn
+python -m lab.runner --condition subagents --tasks learn
+python -m lab.curator
+python -m lab.runner --condition skills-auto --tasks learn
+git add -A && git commit -m "hypotheses"
+git commit --allow-empty -m "freeze skills"
+git tag freeze
+mv results/skills-auto results/skills-auto-dev
+python -m lab.runner --condition baseline --tasks eval
+python -m lab.runner --condition subagents --tasks eval
+python -m lab.runner --condition skills-auto --tasks all
+python scripts/verify_freeze.py
+python -m lab.compare > report/table.md
+python scripts/check_breakdown.py
+```
 
-- Người thực hiện báo `15 passed` cho test_02_agent.py và test_03_runner.py.
-- Chạy baseline data-learn ở Phần 1, sau đó baseline code-learn logs-learn và subagents learn ở Phần 2.1: có 6 kết quả tác vụ học được lưu. Chưa xác định được tổng ngân sách từ các tệp đã đọc.
-- Giữ lần baseline code-learn bị recursion limit; chưa tăng giới hạn hoặc chạy lại. Phần 2.2–2.3 đã phân tích từ run.json và trace.md; chưa chạy tác vụ đánh giá hoặc curator trong lần hoàn thiện báo cáo này.
+Người thực hiện báo 15 passed cho test_02/test_03 trên Ubuntu. Có 21 kết quả tác vụ lưu (18 chính thức và 3 thử Phần 3.4), cộng một lần curator được xác nhận; chưa có token curator hoặc lịch sử đầy đủ để tính ngân sách còn lại. Chưa thực hiện thử thách mở rộng. Giữ kết quả lỗi, chưa chạy lại; không sửa tay skill. Mục 6 ghi lịch sử trước đóng băng, khác bảng chính mục 7.

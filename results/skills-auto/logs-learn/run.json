@@ -3,9 +3,9 @@
   "condition": "skills-auto",
   "role": "learn",
   "error": null,
-  "timestamp": "2026-10-07T00:42:06.784042+00:00",
+  "timestamp": "2026-10-07T02:42:40.058532+00:00",
   "skills_sha256": "34fb336a49b92f9b7e418841e09c0476030922bfe2b4234c70e3250ae4a4b5c8",
-  "seconds": 175.7,
+  "seconds": 141.0,
   "tokens": {
     "input": 14327,
     "output": 16426,
@@ -23,47 +23,47 @@
     {
       "name": "valid_structure",
       "passed": false,
-      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-61w184z8/workspace/errors.json'"
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-kuhm70ka/workspace/errors.json'"
     },
     {
       "name": "entry_count",
       "passed": false,
-      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-61w184z8/workspace/errors.json'"
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-kuhm70ka/workspace/errors.json'"
     },
     {
       "name": "timestamps_utc",
       "passed": false,
-      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-61w184z8/workspace/errors.json'"
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-kuhm70ka/workspace/errors.json'"
     },
     {
       "name": "exception_fields",
       "passed": false,
-      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-61w184z8/workspace/errors.json'"
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-kuhm70ka/workspace/errors.json'"
     },
     {
       "name": "repeat_counts",
       "passed": false,
-      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-61w184z8/workspace/errors.json'"
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-kuhm70ka/workspace/errors.json'"
     },
     {
       "name": "counts_by_service",
       "passed": false,
-      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-61w184z8/workspace/errors.json'"
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-kuhm70ka/workspace/errors.json'"
     },
     {
       "name": "rule_service_names",
       "passed": false,
-      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-61w184z8/workspace/errors.json'"
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-kuhm70ka/workspace/errors.json'"
     },
     {
       "name": "rule_sorted_errors",
       "passed": false,
-      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-61w184z8/workspace/errors.json'"
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-kuhm70ka/workspace/errors.json'"
     },
     {
       "name": "rule_schema_header",
       "passed": false,
-      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-61w184z8/workspace/errors.json'"
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/lab-kuhm70ka/workspace/errors.json'"
     }
   ]
 }
